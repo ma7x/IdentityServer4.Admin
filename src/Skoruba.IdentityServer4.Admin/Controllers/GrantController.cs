@@ -63,7 +63,7 @@ namespace Skoruba.IdentityServer4.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PersistedGrantsDelete(PersistedGrantsDto grants)
         {
-            await _persistedGrantService.DeletePersistedGrantsAsync(grants.SubjectId);
+            await _persistedGrantService.DeletePersistedGrantsAsync(Guid.Parse(grants.SubjectId));
 
             SuccessNotification(_localizer["SuccessPersistedGrantsDelete"], _localizer["SuccessTitle"]);
 
@@ -75,7 +75,7 @@ namespace Skoruba.IdentityServer4.Admin.Controllers
         public async Task<IActionResult> PersistedGrant(string id, int? page)
         {
             var persistedGrants = await _persistedGrantService.GetPersitedGrantsByUser(id, page ?? 1);
-            persistedGrants.SubjectId = Convert.ToInt16(id);
+            persistedGrants.SubjectId = id;
 
             return View(persistedGrants);
         }

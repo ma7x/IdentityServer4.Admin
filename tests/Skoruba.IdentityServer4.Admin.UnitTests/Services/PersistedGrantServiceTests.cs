@@ -102,7 +102,8 @@ namespace Skoruba.IdentityServer4.Admin.UnitTests.Services
 
                 var persistedGrantService = new PersistedGrantService(persistedGrantRepository, localizer);
 
-                const int subjectId = 1;
+                //const int subjectId = 1;
+                Guid subjectId = Guid.Parse("11111111-1111-1111-1111-111111111111");
 
                 for (var i = 0; i < 4; i++)
                 {

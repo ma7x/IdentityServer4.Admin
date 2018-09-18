@@ -560,7 +560,7 @@ namespace Skoruba.IdentityServer4.Admin.UnitTests.Services
                 roleDto.ShouldBeEquivalentTo(newRoleDto);
 
                 //Generate random new role claim
-                var roleClaimDto = IdentityDtoMock.GenerateRandomRoleClaim(0, roleDto.Id);
+                var roleClaimDto = IdentityDtoMock.GenerateRandomRoleClaim(Guid.Empty, roleDto.Id);
 
                 await identityService.CreateRoleClaimsAsync(roleClaimDto);
 
