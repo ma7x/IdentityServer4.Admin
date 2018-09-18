@@ -84,7 +84,7 @@ namespace Skoruba.IdentityServer4.Admin.UnitTests.Repositories
             {
                 var persistedGrantRepository = new PersistedGrantRepository(context);
 
-                var subjectId = 1;
+                var subjectId = Guid.Parse("11111111-1111-1111-1111-111111111111");
 
                 for (var i = 0; i < 4; i++)
                 {
