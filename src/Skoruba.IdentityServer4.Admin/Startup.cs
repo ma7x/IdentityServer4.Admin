@@ -37,7 +37,7 @@ namespace Skoruba.IdentityServer4.Admin
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContexts(HostingEnvironment, Configuration);
-            services.AddAuthentication(HostingEnvironment);
+            services.AddAuthentication(HostingEnvironment, Configuration);
             services.AddServices();
             services.AddMvcLocalization();
             services.AddAuthorizationPolicies();

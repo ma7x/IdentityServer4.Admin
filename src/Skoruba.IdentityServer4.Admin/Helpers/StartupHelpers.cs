@@ -38,6 +38,7 @@ namespace Skoruba.IdentityServer4.Admin.Helpers
 {
     public static class StartupHelpers
     {
+        private static IConfigurationRoot Configuration { get; set; }
         public static void RegisterDbContexts(this IServiceCollection services, IConfigurationRoot configuration)
         {
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
@@ -222,8 +223,9 @@ namespace Skoruba.IdentityServer4.Admin.Helpers
                 });
         }
 
-        public static void AddAuthentication(this IServiceCollection services, IHostingEnvironment hostingEnvironment)
+        public static void AddAuthentication(this IServiceCollection services, IHostingEnvironment hostingEnvironment, IConfigurationRoot configuration)
         {
+            Configuration = configuration;
             services.AddIdentity<UserIdentity, UserIdentityRole>()
                 .AddEntityFrameworkStores<AdminDbContext>()
                 .AddDefaultTokenProviders();
@@ -260,10 +262,11 @@ namespace Skoruba.IdentityServer4.Admin.Helpers
                         options => { options.Cookie.Name = AuthorizationConsts.IdentityAdminCookieName; })
                     .AddOpenIdConnect(AuthorizationConsts.OidcAuthenticationScheme, options =>
                     {
-                        options.Authority = AuthorizationConsts.IdentityServerBaseUrl;
-                        options.RequireHttpsMetadata = false;
+                        options.Authority = configuration["Authorization:IdentityServerBaseUrl"];// AuthorizationConsts.IdentityServerBaseUrl;
+                        //options.Authority = AuthorizationConsts.IdentityServerBaseUrl;
+                        options.RequireHttpsMetadata = true;
 
-                        options.ClientId = AuthorizationConsts.OidcClientId;
+                        options.ClientId = configuration["Authorization:OidcClientId"];// AuthorizationConsts.OidcClientId;
 
                         options.Scope.Clear();
                         options.Scope.Add(AuthorizationConsts.ScopeOpenId);
@@ -298,7 +301,7 @@ namespace Skoruba.IdentityServer4.Admin.Helpers
 
         private static Task OnRedirectToIdentityProvider(RedirectContext n)
         {
-            n.ProtocolMessage.RedirectUri = AuthorizationConsts.IdentityAdminRedirectUri;
+            n.ProtocolMessage.RedirectUri = Configuration["Authorization:IdentityAdminRedirectUri"];// AuthorizationConsts.IdentityAdminRedirectUri;
 
             return Task.FromResult(0);
         }
